@@ -1,35 +1,23 @@
 class User < ApplicationRecord
-  # Secure password (adds password, password_confirmation attributes)
   has_secure_password
 
-  # Associations
-  has_many :created_tasks, class_name: 'Task', foreign_key: 'creator_id', dependent: :destroy
+  enum :role, {
+    member: "member",
+    manager: "manager",
+    admin: "admin"
+  }, prefix: true
+
+  has_many :created_tasks, class_name: 'Task', foreign_key: 'creator_id', dependent: :restrict_with_error
   has_many :assigned_tasks, class_name: 'Task', foreign_key: 'assignee_id', dependent: :nullify
+  
+  validates :email, presence: true, uniqueness: { case_sensitive: false }, format: { with: URI::MailTo::EMAIL_REGEXP }
+  validates :password, length: { minimum: 8 }, if: -> { new_record? || password.present? }
+  validates :role, presence: true
 
-  # Validations
-  validates :email, presence: true, uniqueness: { case_sensitive: false }
-  validates :email, format: { with: URI::MailTo::EMAIL_REGEXP, message: 'must be a valid email address' }
-  validates :password, length: { minimum: 8 }, if: -> { password.present? }
-  validates :role, presence: true, inclusion: { in: %w[admin manager member], message: '%{value} is not a valid role' }
-
-  # Callbacks
   before_save :downcase_email
 
-  # Enum-like methods (manual implementation)
-  def self.roles
-    %w[admin manager member]
-  end
-
-  def admin?
-    role == 'admin'
-  end
-
-  def manager?
-    role == 'manager'
-  end
-
-  def member?
-    role == 'member'
+  def can_assign_tasks?
+    role_manager? || role_admin?
   end
 
   private
