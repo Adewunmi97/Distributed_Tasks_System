@@ -44,7 +44,7 @@ jobs:
       postgres:
         image: postgres
         env:
-          POSTGRES_USER: adewunmi97
+          POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: distributed_tasks_system_test
         ports:
