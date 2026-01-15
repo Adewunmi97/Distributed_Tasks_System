@@ -1,0 +1,23 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  timeout: 5000
+  username: <%= ENV.fetch("POSTGRES_USER", "adewunmi97") %>
+  password: <%= ENV.fetch("POSTGRES_PASSWORD", "") %>
+  host: <%= ENV.fetch("POSTGRES_HOST", "localhost") %>
+  port: <%= ENV.fetch("POSTGRES_PORT", "5432") %>
+
+development:
+  <<: *default
+  database: distributed_tasks_system_development
+
+test:
+  <<: *default
+  database: distributed_tasks_system_test
+
+production:
+  <<: *default
+  database: distributed_tasks_system_production
+  username: distributed_tasks_system
+  password: <%= ENV["DISTRIBUTED_TASKS_SYSTEM_DATABASE_PASSWORD"] %>
