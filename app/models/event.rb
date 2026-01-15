@@ -8,6 +8,14 @@ class Event < ApplicationRecord
   scope :unprocessed, -> { where(processed_at: nil) }
   scope :recent, -> { order(created_at: :desc) }
 
+  def task_event?
+    event_type.start_with?('task.')
+  end
+
+  def user_event?
+    event_type.start_with?('user.')
+  end
+
   def processed?
     processed_at.present?
   end
