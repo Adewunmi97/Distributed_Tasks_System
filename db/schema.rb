@@ -10,9 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_01_15_161843) do
+ActiveRecord::Schema[8.0].define(version: 2026_01_15_171311) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "events", force: :cascade do |t|
+    t.string "event_type", limit: 100, null: false
+    t.jsonb "payload", default: {}, null: false
+    t.bigint "task_id"
+    t.datetime "processed_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["created_at"], name: "index_events_on_created_at"
+    t.index ["event_type"], name: "index_events_on_event_type"
+    t.index ["payload"], name: "index_events_on_payload", using: :gin
+    t.index ["processed_at"], name: "index_events_on_processed_at"
+    t.index ["task_id"], name: "index_events_on_task_id"
+  end
 
   create_table "tasks", force: :cascade do |t|
     t.string "title", null: false
@@ -39,6 +53,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_15_161843) do
     t.index ["role"], name: "index_users_on_role"
   end
 
+  add_foreign_key "events", "tasks", on_delete: :cascade
   add_foreign_key "tasks", "users", column: "assignee_id", on_delete: :nullify
   add_foreign_key "tasks", "users", column: "creator_id"
 end
