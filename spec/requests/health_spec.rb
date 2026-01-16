@@ -6,7 +6,7 @@ RSpec.describe 'Health Check', type: :request do
       get '/health'
 
       expect(response).to have_http_status(:ok)
-      
+
       json = JSON.parse(response.body)
       expect(json['status']).to eq('ok')
       expect(json['database']).to eq('connected')
