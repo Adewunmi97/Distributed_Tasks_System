@@ -11,6 +11,6 @@ class CreateTasks < ActiveRecord::Migration[8.0]
     end
 
     add_index :tasks, :state
-    add_index :tasks, [:assignee_id, :state]
+    add_index :tasks, [ :assignee_id, :state ]
   end
 end

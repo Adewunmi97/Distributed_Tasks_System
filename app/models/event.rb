@@ -1,6 +1,5 @@
 class Event < ApplicationRecord
-
-  belongs_to :task, class_name: 'Task', optional: true
+  belongs_to :task, class_name: "Task", optional: true
 
   validates :event_type, presence: true, format: { with: /\A[a-z_]+\.[a-z_]+\z/ }
   validates :payload, presence: true
@@ -9,11 +8,11 @@ class Event < ApplicationRecord
   scope :recent, -> { order(created_at: :desc) }
 
   def task_event?
-    event_type.start_with?('task.')
+    event_type.start_with?("task.")
   end
 
   def user_event?
-    event_type.start_with?('user.')
+    event_type.start_with?("user.")
   end
 
   def processed?
@@ -25,6 +24,6 @@ class Event < ApplicationRecord
   end
 
   def namespace
-    event_type.split('.').first
+    event_type.split(".").first
   end
 end

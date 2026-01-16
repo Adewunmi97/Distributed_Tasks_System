@@ -36,7 +36,7 @@ RSpec.describe Task, type: :model do
   describe "assignee requirements" do
     let(:creator) { create(:user) }
     let(:assignee) { create(:user) }
-    
+
     it "is invalid if assigned without assignee" do
       task.state = "assigned"
       task.assignee = nil
@@ -49,6 +49,6 @@ RSpec.describe Task, type: :model do
       assignee = create(:user)
       task = build(:task, :assigned, creator: creator, assignee: assignee)
       expect(task).to be_valid
-    end    
+    end
   end
 end
