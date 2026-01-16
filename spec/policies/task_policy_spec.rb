@@ -7,7 +7,7 @@ RSpec.describe TaskPolicy, type: :policy do
   let(:manager) { User.create!(email: "manager@example.com", password: "password123", role: "manager") }
   let(:member) { User.create!(email: "member@example.com", password: "password123", role: "member") }
   let(:other_member) { User.create!(email: "other@example.com", password: "password123", role: "member") }
-  
+
   let(:task) { Task.create!(title: "Test Task", creator: member, state: "draft") }
 
   permissions :index?, :show?, :create? do

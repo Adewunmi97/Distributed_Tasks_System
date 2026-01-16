@@ -9,7 +9,7 @@ RSpec.describe "Api::V1::Auth::Registrations", type: :request do
       }
     }
   end
-  
+
   describe "POST /api/v1/auth/register" do
     context "with valid parameters" do
       it "creates a new user" do

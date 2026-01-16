@@ -7,7 +7,7 @@ Rails.application.routes.draw do
         delete "logout", to: "sessions#destroy"
       end
 
-      resources :tasks, only: [:index, :show, :create, :update, :destroy]
+      resources :tasks, only: [ :index, :show, :create, :update, :destroy ]
     end
   end
   get "/health", to: "health#show"

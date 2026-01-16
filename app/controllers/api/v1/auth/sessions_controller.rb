@@ -2,14 +2,14 @@ module Api
   module V1
     module Auth
       class SessionsController < ApplicationController
-        skip_before_action :authenticate_user!, only: [:create]
+        skip_before_action :authenticate_user!, only: [ :create ]
 
         def create
           user = User.find_by(email: login_params[:email]&.downcase)
 
           if user&.authenticate(login_params[:password])
             token = Authentication::JsonWebToken.encode(user_id: user.id)
-            
+
             render json: {
               message: "Login successful",
               user: user_response(user),

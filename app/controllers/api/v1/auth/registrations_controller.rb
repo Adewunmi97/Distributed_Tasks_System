@@ -2,14 +2,14 @@ module Api
   module V1
     module Auth
       class RegistrationsController < ApplicationController
-        skip_before_action :authenticate_user!, only: [:create]
+        skip_before_action :authenticate_user!, only: [ :create ]
 
         def create
           user = User.new(registration_params)
 
           if user.save
             token = Authentication::JsonWebToken.encode(user_id: user.id)
-            
+
             render json: {
               message: "User registered successfully",
               user: user_response(user),

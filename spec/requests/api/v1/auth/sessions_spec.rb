@@ -59,7 +59,7 @@ RSpec.describe "Api::V1::Auth::Sessions", type: :request do
   describe "DELETE /api/v1/auth/logout" do
     it "returns success message" do
       token = Authentication::JsonWebToken.encode(user_id: user.id)
-      
+
       delete "/api/v1/auth/logout", headers: { "Authorization" => "Bearer #{token}" }
 
       expect(response).to have_http_status(:ok)
