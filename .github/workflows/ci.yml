@@ -2,14 +2,12 @@ name: CI
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
+    branches: [main]
 
 jobs:
   scan_ruby:
     name: Security Scan (Brakeman)
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -20,7 +18,7 @@ jobs:
           ruby-version: .ruby-version
           bundler-cache: true
 
-      - name: Run Brakeman
+      - name: Scan for Rails security issues
         run: bin/brakeman --no-pager
 
 
@@ -29,17 +27,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
         with:
           ruby-version: .ruby-version
           bundler-cache: true
-
-      - name: Run RuboCop
-        run: bin/rubocop -f github
+      - run: bin/rubocop -f github
 
 
   test:
@@ -48,7 +41,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres:15
+        image: postgres:16
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
@@ -77,28 +70,26 @@ jobs:
       REDIS_URL: redis://localhost:6379/0
 
     steps:
-      - name: Install system dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-            build-essential \
-            libpq-dev \
-            libyaml-dev \
-            pkg-config
+      - uses: actions/checkout@v4
 
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
+      - uses: ruby/setup-ruby@v1
         with:
           ruby-version: .ruby-version
           bundler-cache: true
 
-      - name: Prepare database
+      - name: Install dependencies
         run: |
-          bin/rails db:create
-          bin/rails db:migrate
+          sudo apt-get update
+          sudo apt-get install -y libpq-dev
 
-      - name: Run RSpec
-        run: bundle exec rspec
+      - name: Prepare database & run tests
+        env:
+          RAILS_ENV: test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: 5432
+          REDIS_URL: redis://localhost:6379/0
+        run: |
+          bin/rails db:create db:schema:load
+          bundle exec rspec
