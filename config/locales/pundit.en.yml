@@ -1,0 +1,8 @@
+en:
+  pundit:
+    default: "You cannot perform this action"
+    task_policy:
+      update?: "You can only update tasks you created"
+      destroy?: "You can only delete tasks you created"
+      assign?: "Only managers and admins can assign tasks"
+      transition?: "Only the assignee can transition task states"
