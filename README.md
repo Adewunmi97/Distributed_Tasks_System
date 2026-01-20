@@ -41,9 +41,9 @@ A production-grade implementation demonstrating mastery of:
 | Component | Status | Description |
 |-----------|--------|-------------|
 | **Project Structure** | ✅ Complete | Clean architecture, domain boundaries |
-| **API Service** | 🔄 In Progress | Rails API-only, explicit controllers |
-| **Authentication** | 📋 Planned | Devise/custom auth, session management |
-| **Authorization** | 📋 Planned | Pundit, role-based access control |
+| **API Service** | ✅ Complete | Rails API-only, explicit controllers |
+| **Authentication** | ✅ Complete | Devise/custom auth, session management |
+| **Authorization** | 🔄 In Progress | Pundit, role-based access control |
 | **Background Jobs** | 📋 Planned | Sidekiq, Redis queue management |
 | **Notification Service** | 📋 Planned | Extract as separate service |
 | **Testing Suite** | 📋 Planned | RSpec unit & request specs |
